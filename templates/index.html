@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Products</h2>
+    <div class="product-grid">
+        <div class="product-card">
+            <img src="/static/images/p1.webp" alt="T-Shirt">
+            <h3>T-Shirt</h3>
+            <p>$19.99</p>
+            <a href="{% url 'product_detail' 1 %}">View Details</a>
+        </div>
+        <div class="product-card">
+            <img src="/static/images/p2.jpeg" alt="Headphones">
+            <h3>Headphones</h3>
+            <p>$49.99</p>
+            <a href="{% url 'product_detail' 2 %}">View Details</a>
+        </div>
+        <div class="product-card">
+            <img src="/static/images/p3.avif" alt="Backpack">
+            <h3>Backpack</h3>
+            <p>$29.99</p>
+            <a href="{% url 'product_detail' 3 %}">View Details</a>
+        </div>
+    </div>
+{% endblock %}
