@@ -1,7 +1,17 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
     <h2>Your Cart</h2>
-    <div id="cart-items"></div>
-    <p>Total: $<span id="cart-total">0.00</span></p>
+    <div id="cart-items">
+        {% for item in cart_items %}
+            <div class="cart-item">
+                <span>{{ item.product.name }} - ${{ item.product.price }} x {{ item.quantity }} = ${{ item.product.price|floatformat:2|multiply:item.quantity }}</span>
+                <a href="{% url 'remove_from_cart' item.id %}">Remove</a>
+            </div>
+        {% empty %}
+            <p>Your cart is empty.</p>
+        {% endfor %}
+    </div>
+    <p>Total: ${{ cart_total|floatformat:2 }}</p>
 {% endblock %}

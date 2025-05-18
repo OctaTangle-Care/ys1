@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
     <div class="product-detail">
-        <img id="product-image" src="" alt="Product">
-        <h2 id="product-name"></h2>
-        <p id="product-price"></p>
-        <p id="product-description"></p>
-        <button onclick="addToCart({{ product_id }})">Add to Cart</button>
+        <img src="{{ product.image }}" alt="{{ product.name }}">
+        <h2>{{ product.name }}</h2>
+        <p>${{ product.price }}</p>
+        <p>{{ product.description }}</p>
+        <a href="{% url 'add_to_cart' product.id %}" class="button">Add to Cart</a>
     </div>
 {% endblock %}

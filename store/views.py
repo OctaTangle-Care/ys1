@@ -1,13 +1,61 @@
-from django.shortcuts import render
+# from django.shortcuts import render
 
-# Create your views here.
-from django.shortcuts import render
+# # Create your views here.
+# from django.shortcuts import render
+
+# def home(request):
+#     return render(request, 'index.html')
+
+# def product_detail(request, id):
+#     return render(request, 'product.html', {'product_id': id})
+
+# def cart(request):
+#     return render(request, 'cart.html')
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Product, CartItem
+from django.contrib import messages
 
 def home(request):
-    return render(request, 'index.html')
+    products = Product.objects.all()
+    cart_count = CartItem.objects.filter(session_id=request.session.session_key).count()
+    return render(request, 'store/index.html', {'products': products, 'cart_count': cart_count})
 
 def product_detail(request, id):
-    return render(request, 'product.html', {'product_id': id})
+    product = get_object_or_404(Product, id=id)
+    cart_count = CartItem.objects.filter(session_id=request.session.session_key).count()
+    return render(request, 'store/product.html', {'product': product, 'cart_count': cart_count})
 
 def cart(request):
-    return render(request, 'cart.html')
+    if not request.session.session_key:
+        request.session.create()
+    cart_items = CartItem.objects.filter(session_id=request.session.session_key)
+    cart_total = sum(item.product.price * item.quantity for item in cart_items)
+    cart_count = cart_items.count()
+    return render(request, 'store/cart.html', {
+        'cart_items': cart_items,
+        'cart_total': cart_total,
+        'cart_count': cart_count
+    })
+
+def add_to_cart(request, product_id):
+    if not request.session.session_key:
+        request.session.create()
+    product = get_object_or_404(Product, id=product_id)
+    cart_item, created = CartItem.objects.get_or_create(
+        session_id=request.session.session_key,
+        product=product,
+        defaults={'quantity': 1}
+    )
+    if not created:
+        cart_item.quantity += 1
+        cart_item.save()
+    messages.success(request, 'Added to cart!')
+    return redirect('cart')
+
+def remove_from_cart(request, item_id):
+    cart_item = get_object_or_404(CartItem, id=item_id, session_id=request.session.session_key)
+    cart_item.delete()
+    messages.success(request, 'Item removed from cart!')
+    return redirect('cart')

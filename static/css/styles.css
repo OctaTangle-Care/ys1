@@ -38,15 +38,16 @@ main {
     height: auto;
 }
 
-button {
+.button {
     background-color: #28a745;
     color: white;
     border: none;
     padding: 10px;
-    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
 }
 
-button:hover {
+.button:hover {
     background-color: #218838;
 }
 
@@ -59,4 +60,11 @@ button:hover {
     justify-content: space-between;
     padding: 10px;
     border-bottom: 1px solid #ddd;
+}
+
+.messages .success {
+    color: green;
+    padding: 10px;
+    border: 1px solid green;
+    margin-bottom: 10px;
 }
