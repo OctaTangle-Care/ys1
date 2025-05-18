@@ -47,3 +47,24 @@ def remove_from_cart(request, item_id):
     cart_item.delete()
     messages.success(request, 'Item removed from cart!')
     return redirect('cart')
+
+from django.core.mail import send_mail
+from django.shortcuts import render
+from django.conf import settings
+
+def send_email_view(request):
+    if request.method == 'POST':
+        recipient_email = request.POST.get('email')
+        message = request.POST.get('message')
+
+        send_mail(
+            subject='Message from Your Site',
+            message=message,
+            from_email=settings.EMAIL_HOST_USER,  # Replace with your email
+            recipient_list=[recipient_email],
+            fail_silently=False,
+        )
+
+        return render(request, 'send_email.html', {'success': True})
+    
+    return render(request, 'send_email.html')

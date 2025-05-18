@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send Email</title>
+</head>
+<body>
+    <h1>Send Email</h1>
+    <form action="{% url 'send_email_view' %}" method="POST">
+        {% csrf_token %}
+        <label for="email">Recipient Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="message" rows="6" cols="40" required></textarea><br><br>
+
+        <button type="submit">Send</button>
+    </form>
+
+    {% if success %}
+        <p style="color: green;">Email sent successfully!</p>
+    {% endif %}
+</body>
+</html>
