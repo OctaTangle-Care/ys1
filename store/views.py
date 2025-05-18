@@ -1,18 +1,3 @@
-# from django.shortcuts import render
-
-# # Create your views here.
-# from django.shortcuts import render
-
-# def home(request):
-#     return render(request, 'index.html')
-
-# def product_detail(request, id):
-#     return render(request, 'product.html', {'product_id': id})
-
-# def cart(request):
-#     return render(request, 'cart.html')
-
-
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product, CartItem
 from django.contrib import messages
@@ -20,12 +5,12 @@ from django.contrib import messages
 def home(request):
     products = Product.objects.all()
     cart_count = CartItem.objects.filter(session_id=request.session.session_key).count()
-    return render(request, 'store/index.html', {'products': products, 'cart_count': cart_count})
+    return render(request, 'index.html', {'products': products, 'cart_count': cart_count})
 
 def product_detail(request, id):
     product = get_object_or_404(Product, id=id)
     cart_count = CartItem.objects.filter(session_id=request.session.session_key).count()
-    return render(request, 'store/product.html', {'product': product, 'cart_count': cart_count})
+    return render(request, 'product.html', {'product': product, 'cart_count': cart_count})
 
 def cart(request):
     if not request.session.session_key:
@@ -33,7 +18,10 @@ def cart(request):
     cart_items = CartItem.objects.filter(session_id=request.session.session_key)
     cart_total = sum(item.product.price * item.quantity for item in cart_items)
     cart_count = cart_items.count()
-    return render(request, 'store/cart.html', {
+    # Add item_total to each cart item
+    for item in cart_items:
+        item.item_total = item.product.price * item.quantity
+    return render(request, 'cart.html', {
         'cart_items': cart_items,
         'cart_total': cart_total,
         'cart_count': cart_count

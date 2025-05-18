@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 asgiref==3.8.1
 Django==5.2.1
 mysqlclient==2.2.7
 sqlparse==0.5.3
 tzdata==2025.2
+=======
+asgiref==3.8.1
+Django==5.2.1
+sqlparse==0.5.3
+tzdata==2025.2
+>>>>>>> 760ffc81fab0ee853e2ea09e9397f76f9f00a94e

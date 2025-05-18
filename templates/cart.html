@@ -6,7 +6,7 @@
     <div id="cart-items">
         {% for item in cart_items %}
             <div class="cart-item">
-                <span>{{ item.product.name }} - ${{ item.product.price }} x {{ item.quantity }} = ${{ item.product.price|floatformat:2|multiply:item.quantity }}</span>
+                <span>{{ item.product.name }} - ${{ item.product.price }} x {{ item.quantity }} = ${{ item.item_total|floatformat:2 }}</span>
                 <a href="{% url 'remove_from_cart' item.id %}">Remove</a>
             </div>
         {% empty %}
